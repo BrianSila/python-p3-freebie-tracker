@@ -30,7 +30,7 @@ class Dev(Base):
     name= Column(String())
 
     freebies = relationship('Freebie', back_populates='dev')
-    companies = association_proxy('freebies', 'company', creator= lambda cm: Freebie(company=cm))
+    companies = association_proxy('freebies', 'company', creator=lambda cm: Freebie(company=cm))
 
     def __repr__(self):
         return f'<Dev {self.name}>'
@@ -45,6 +45,14 @@ class Freebie(Base):
 
     company = relationship('Company', back_populates='freebies')
     dev = relationship('Dev', back_populates='freebies')
+
+    def __init__(self, company=None, dev=None, name=None):
+        if company is not None:
+            self.company = company
+        if dev is not None:
+            self.dev = dev
+        if name is not None:
+            self.name = name
 
     def __repr__(self):
         return f"<Freebie {self.id}: {self.name} Company_ID: {self.company_id}, Dev_ID: {self.dev_id}>"
